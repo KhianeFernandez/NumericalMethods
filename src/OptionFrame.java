@@ -33,6 +33,15 @@ public class OptionFrame extends JFrame {
             }
         });
 
+        SimpsonButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new SimpsonsMethodFrame(Function);
+                    dispose();
+
+            }
+        });
+
         addToContainer(FunctionLabel,0,0);
         addToContainer(BisectionButton,0,1);
         addToContainer(SecantButton,0,2);
