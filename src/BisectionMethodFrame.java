@@ -14,7 +14,7 @@ public class BisectionMethodFrame extends JFrame {
     JComboBox<Integer> decimalComboBox;
     Container container;
     JTable Table;
-    MethodAbstractTableModel Model;
+    BisectionAbstractTableModel Model;
     GridBagLayout layout;
 
     String functionString;
@@ -78,10 +78,10 @@ public class BisectionMethodFrame extends JFrame {
         addToPanel(Panel2, SolveButton, 8, 0);
         addToContainer(Panel2, 0, 1);
 
-        Model = new MethodAbstractTableModel() {
+        Model = new BisectionAbstractTableModel() {
             @Override
             public Object getValueAt(int rowIndex, int columnIndex) {
-                ItirativeAnswer answer = IterativeAnswers.get(rowIndex);
+                BisectionAnswer answer = BisectionAnswers.get(rowIndex);
                 String format = "%." + decimalPlaces + "f";
 
                 switch (columnIndex) {
@@ -139,7 +139,7 @@ public class BisectionMethodFrame extends JFrame {
     }
 
     private void performBisection(double a, double b, double tolerance) {
-        Model.IterativeAnswers.clear();
+        Model.BisectionAnswers.clear();
         Model.fireTableDataChanged();
 
         double fa = evaluateFunction(a);
@@ -170,7 +170,7 @@ public class BisectionMethodFrame extends JFrame {
                 error = Math.abs(xn - previousXn);
             }
 
-            Model.addIterativeAnswer(new ItirativeAnswer(n + 1, a, b, xn, fxn, n > 0 ? error : Double.NaN));
+            Model.addIterativeAnswer(new BisectionAnswer(n + 1, a, b, xn, fxn, n > 0 ? error : Double.NaN));
 
             if (fxn == 0) break;
 

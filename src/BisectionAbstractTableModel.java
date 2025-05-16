@@ -2,24 +2,24 @@
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 
-public class MethodAbstractTableModel extends AbstractTableModel {
+public class BisectionAbstractTableModel extends AbstractTableModel {
 
-    ArrayList<ItirativeAnswer> IterativeAnswers;
+    ArrayList<BisectionAnswer> BisectionAnswers;
 
     String []Columns = {"Iteration" , "X0" , "X1" , "X2", "fX2", "Ea"};
 
-    public MethodAbstractTableModel(){
-        IterativeAnswers = new ArrayList<>();
+    public BisectionAbstractTableModel(){
+        BisectionAnswers = new ArrayList<>();
     }
 
-    public void addIterativeAnswer(ItirativeAnswer Iterative){
-        IterativeAnswers.add(Iterative);
+    public void addIterativeAnswer(BisectionAnswer Iterative){
+        BisectionAnswers.add(Iterative);
         this.fireTableDataChanged();
     }
 
     @Override
     public int getRowCount() {
-        return IterativeAnswers.size();
+        return BisectionAnswers.size();
     }
 
     @Override
@@ -35,7 +35,7 @@ public class MethodAbstractTableModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
 
-        ItirativeAnswer Answers = IterativeAnswers.get(rowIndex);
+        BisectionAnswer Answers = BisectionAnswers.get(rowIndex);
 
         if(columnIndex == 0){
             return Answers.getN();

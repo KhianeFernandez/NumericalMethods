@@ -1,10 +1,10 @@
 
-public class ItirativeAnswer {
+public class BisectionAnswer {
 
     int n;
     double x0,x1,x2,fx2,ea;
 
-    public ItirativeAnswer(int n, double x0, double x1, double x2, double fx2, double ea) {
+    public BisectionAnswer(int n, double x0, double x1, double x2, double fx2, double ea) {
         this.n = n;
         this.x0 = x0;
         this.x1 = x1;
