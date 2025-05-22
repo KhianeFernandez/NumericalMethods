@@ -10,13 +10,13 @@ public class OptionFrame extends JFrame {
     Container container;
     GridBagLayout layout;
 
-    public OptionFrame (String Function){
+    public OptionFrame (){
 
         layout = new GridBagLayout();
         container = this.getContentPane();
         container.setLayout(layout);
 
-        FunctionLabel = new JLabel("F(x) = " + Function);
+//        FunctionLabel = new JLabel("F(x) = " + Function);
         BisectionButton = new JButton("BISECTION METHOD");
         SecantButton = new JButton("SECANT METHOD");
         DoolittleButton = new JButton("DOOLITTLE METHOD");
@@ -27,8 +27,42 @@ public class OptionFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                new BisectionMethodFrame(Function);
-                dispose();
+                String Function = JOptionPane.showInputDialog(null,"Enter Equation:");
+
+                if(Function == null){
+                    JOptionPane.showMessageDialog(null,"No Function");
+                }else{
+                    new BisectionMethodFrame(Function);
+                    dispose();
+                }
+
+
+            }
+        });
+
+        SecantButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+
+
+            }
+        });
+
+        DoolittleButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                new DoolittleFrame();
+                    dispose();
+
+            }
+        });
+
+        GaussButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
 
             }
         });
@@ -36,13 +70,20 @@ public class OptionFrame extends JFrame {
         SimpsonButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new SimpsonsMethodFrame(Function);
+
+                String Function = JOptionPane.showInputDialog(null,"Enter Equation:");
+
+                if(Function == null){
+                    JOptionPane.showMessageDialog(null,"No Function");
+                }else{
+                    new SimpsonsMethodFrame(Function);
                     dispose();
+                }
 
             }
         });
 
-        addToContainer(FunctionLabel,0,0);
+//        addToContainer(FunctionLabel,0,0);
         addToContainer(BisectionButton,0,1);
         addToContainer(SecantButton,0,2);
         addToContainer(DoolittleButton,0,3);
