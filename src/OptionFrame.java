@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 
 public class OptionFrame extends JFrame {
 
-    JLabel FunctionLabel;
     JButton BisectionButton, SecantButton, DoolittleButton, GaussButton, SimpsonButton;
     Container container;
     GridBagLayout layout;
@@ -16,7 +15,6 @@ public class OptionFrame extends JFrame {
         container = this.getContentPane();
         container.setLayout(layout);
 
-//        FunctionLabel = new JLabel("F(x) = " + Function);
         BisectionButton = new JButton("BISECTION METHOD");
         SecantButton = new JButton("SECANT METHOD");
         DoolittleButton = new JButton("DOOLITTLE METHOD");
@@ -95,7 +93,6 @@ public class OptionFrame extends JFrame {
             }
         });
 
-//        addToContainer(FunctionLabel,0,0);
         addToContainer(BisectionButton,0,1);
         addToContainer(SecantButton,0,2);
         addToContainer(DoolittleButton,0,3);

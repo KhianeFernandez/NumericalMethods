@@ -195,7 +195,7 @@ public class SecantMethodFrame extends JFrame {
                 Model.addIterativeAnswer(new SecantAnswer(n, x0, x1, fx0, fx1, x2, ea));
 
                 if (ea <= tolerance) {
-                    break; // stop after logging this iteration
+                    break;
                 }
             }
 

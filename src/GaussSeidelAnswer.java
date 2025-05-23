@@ -1,4 +1,4 @@
-// GaussSeidelAnswer.java
+
 public class GaussSeidelAnswer {
     private final int iteration;
     private final double[] x;

@@ -157,7 +157,7 @@ public class DoolittleMethodFrame extends JFrame {
             }
         });
 
-        setTitle("Doolittle LU Decomposition");
+        setTitle("DOOLITTLE LU DECOMPOSITION CALCULATOR");
         setSize(650, 550);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
