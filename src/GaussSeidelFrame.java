@@ -19,7 +19,7 @@ public class GaussSeidelFrame extends JFrame {
     JTable table;
     GaussSeidelTableModel model;
     int decimalPlaces = 3;
-
+// f
     public GaussSeidelFrame() {
         setTitle("GAUSS-SEIDEL METHOD CALCULATOR");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
