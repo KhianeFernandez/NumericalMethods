@@ -62,7 +62,7 @@ public class OptionFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                new DoolittleFrame();
+                new DoolittleMethodFrame();
                     dispose();
 
             }

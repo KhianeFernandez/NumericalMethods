@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class DoolittleFrame extends JFrame {
+public class DoolittleMethodFrame extends JFrame {
     JTextField txf1, txf2, txf3, txf4, txf5, txf6, txf7, txf8, txf9, txf10, txf11, txf12;
     JLabel e1, e2, e3, x1, x2, x3, x11, x22, x33, x111, x222, x333;
     JTextArea txa1;
@@ -13,7 +13,7 @@ public class DoolittleFrame extends JFrame {
     JComboBox<Integer> decimalSelector;
     JPanel panel;
 
-    public DoolittleFrame() {
+    public DoolittleMethodFrame() {
 
         txa1 = new JTextArea(15, 50);
         txa1.setFont(new Font("Monospaced", Font.PLAIN, 12));
@@ -172,6 +172,6 @@ public class DoolittleFrame extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(DoolittleFrame::new);
+        SwingUtilities.invokeLater(DoolittleMethodFrame::new);
     }
 }

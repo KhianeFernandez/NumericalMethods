@@ -2,6 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 
@@ -114,6 +117,26 @@ public class BisectionMethodFrame extends JFrame {
                     JOptionPane.showMessageDialog(BisectionMethodFrame.this,
                             "Invalid input for a, b, or Ea.", "Input Error", JOptionPane.ERROR_MESSAGE);
                 }
+            }
+        });
+
+        aField.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if(e.getKeyCode() == KeyEvent.VK_F1){
+                    new OptionFrame();
+                        dispose();
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+
             }
         });
 
