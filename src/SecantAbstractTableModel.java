@@ -4,7 +4,7 @@ import java.util.List;
 
 public class SecantAbstractTableModel extends AbstractTableModel {
     List<SecantAnswer> SecantAnswers;
-    private final String[] columnNames = {"n", "x₀", "x₁", "f(x₀)", "f(x₁)", "x₂", "Ea(%)"};
+    private final String[] columnNames = {"n", "x₀", "x₁", "f(x₀)", "f(x₁)", "x₂", "Ea"};
 
     public SecantAbstractTableModel() {
         SecantAnswers = new ArrayList<>();
