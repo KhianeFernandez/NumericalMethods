@@ -2,6 +2,9 @@
     import java.awt.*;
     import java.awt.event.ActionEvent;
     import java.awt.event.ActionListener;
+    import java.awt.event.KeyEvent;
+    import java.awt.event.KeyListener;
+
     import net.objecthunter.exp4j.Expression;
     import net.objecthunter.exp4j.ExpressionBuilder;
 
@@ -29,8 +32,11 @@
 
             try {
                 String formattedFunction = Function
-                        .replaceAll("([0-9])([x])", "$1*$2")
-                        .replaceAll("e", "2.718281828459045");
+                        .replaceAll("([0-9])([a-zA-Z(])", "$1*$2") // Add * between numbers and variables/functions
+                        .replaceAll("([)])([a-zA-Z])", "$1*$2")    // Add * between closing parenthesis and function/variable
+                        .replaceAll("([a-zA-Z])([0-9])", "$1*$2")  // Add * between function name and number
+                        .replaceAll("e", "2.718281828459045");     // Replace 'e' with Euler's number
+
 
                 expression = new ExpressionBuilder(formattedFunction)
                         .variable("x")
@@ -132,6 +138,27 @@
                 }
             });
 
+            aField.addKeyListener(new KeyListener() {
+                @Override
+                public void keyTyped(KeyEvent e) {
+
+                }
+
+                @Override
+                public void keyPressed(KeyEvent e) {
+                    if(e.getKeyCode() == KeyEvent.VK_F1){
+                        new OptionFrame();
+                        dispose();
+                    }
+                }
+
+                @Override
+                public void keyReleased(KeyEvent e) {
+
+                }
+            });
+
+
             this.setSize(800, 500);
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
             int x = (screenSize.width - this.getWidth()) / 2;
@@ -154,40 +181,37 @@
         }
 
         private void performSimpsons(double a, double b, int n) {
+            if (n % 2 != 0) {
+                throw new IllegalArgumentException("n must be even for Simpson's Rule");
+            }
+
             Model.simpsonsAnswers.clear();
             Model.fireTableDataChanged();
 
-
-
             double h = (b - a) / n;
-            double sum = 0;
-            double sumFxi = 0;
-
+            double sum = 0.0;
+            double sumFxi = 0.0;
 
             for (int i = 0; i <= n; i++) {
                 double x = a + i * h;
                 double fx = evaluateFunction(x);
 
-                int mod2 = (i % 2 == 0) ? 1 : 0;
-
-
-                int rule;
+                int weight;
                 if (i == 0 || i == n) {
-                    rule = 1;
-                } else if (i % 2 == 1) {
-                    rule = 4;
+                    weight = 1;
+                } else if (i % 2 == 0) {
+                    weight = 2;
                 } else {
-                    rule = 2;
+                    weight = 4;
                 }
 
-                double fxi = rule * fx;
-                sum += fxi;
-                sumFxi += fxi;
+                sum += weight * fx;
+                sumFxi += fx;
 
-                Model.simpsonsAnswers.add(new SimpsonsAnswer("x" + i, x, fx, mod2, rule, fxi));
+                Model.simpsonsAnswers.add(new SimpsonsAnswer("x" + i, x, fx, i % 2, weight, weight * fx));
             }
 
-            double integral = (h / 3) * sum;
+            double integral = (h / 3.0) * sum;
 
             String format = "%." + decimalPlaces + "f";
             sumLabel.setText(String.format("Sum of F(xi): " + format, sumFxi));
@@ -195,6 +219,8 @@
 
             Model.fireTableDataChanged();
         }
+
+
 
         public void addToPanel(JPanel panel, Component component,
                                int gridx, int gridy) {
