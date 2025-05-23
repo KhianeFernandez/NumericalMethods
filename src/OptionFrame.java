@@ -44,6 +44,15 @@ public class OptionFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
+                String Function = JOptionPane.showInputDialog(null,"Enter Equation:");
+
+                if(Function == null){
+                    JOptionPane.showMessageDialog(null,"No Function");
+                }else{
+                    new SecantMethodFrame(Function);
+                    dispose();
+                }
+
 
 
             }
@@ -63,6 +72,8 @@ public class OptionFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
+                new GaussSeidelFrame();
+                    dispose();
 
             }
         });
