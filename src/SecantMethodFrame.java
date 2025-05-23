@@ -5,27 +5,25 @@ import java.awt.event.ActionListener;
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 
-public class BisectionMethodFrame extends JFrame {
+public class SecantMethodFrame extends JFrame {
 
-    JLabel FunctionLabel, aLabel, bLabel, EaLabel, EstimatedRoot, decimalLabel;
-    JTextField aField, bField, EaField;
+    JLabel FunctionLabel, x0Label, x1Label, EaLabel, EstimatedRoot, decimalLabel;
+    JTextField x0Field, x1Field, EaField;
     JButton SolveButton;
     JPanel Panel1, Panel2;
     JComboBox<Integer> decimalComboBox;
     Container container;
     JTable Table;
-    BisectionAbstractTableModel Model;
+    SecantAbstractTableModel Model;
     GridBagLayout layout;
 
     String functionString;
     Expression expression;
     int decimalPlaces = 3;
 
-    public BisectionMethodFrame(String Function) {
+    public SecantMethodFrame(String Function) {
         this.functionString = Function;
-
         try {
-
             String formattedFunction = Function
                     .replaceAll("([0-9])([x])", "$1*$2")
                     .replaceAll("e", "2.718281828459045");
@@ -49,10 +47,10 @@ public class BisectionMethodFrame extends JFrame {
         addToContainer(Panel1, 0, 0);
 
         Panel2 = new JPanel();
-        aLabel = new JLabel("a = ");
-        aField = new JTextField(5);
-        bLabel = new JLabel("b = ");
-        bField = new JTextField(5);
+        x0Label = new JLabel("x₀ = ");
+        x0Field = new JTextField(5);
+        x1Label = new JLabel("x₁ = ");
+        x1Field = new JTextField(5);
         EaLabel = new JLabel("Ea ≤ ");
         EaField = new JTextField(5);
         SolveButton = new JButton("SOLVE");
@@ -67,10 +65,10 @@ public class BisectionMethodFrame extends JFrame {
             Model.fireTableDataChanged();
         });
 
-        addToPanel(Panel2, aLabel, 0, 0);
-        addToPanel(Panel2, aField, 1, 0);
-        addToPanel(Panel2, bLabel, 2, 0);
-        addToPanel(Panel2, bField, 3, 0);
+        addToPanel(Panel2, x0Label, 0, 0);
+        addToPanel(Panel2, x0Field, 1, 0);
+        addToPanel(Panel2, x1Label, 2, 0);
+        addToPanel(Panel2, x1Field, 3, 0);
         addToPanel(Panel2, EaLabel, 4, 0);
         addToPanel(Panel2, EaField, 5, 0);
         addToPanel(Panel2, decimalLabel, 6, 0);
@@ -78,19 +76,20 @@ public class BisectionMethodFrame extends JFrame {
         addToPanel(Panel2, SolveButton, 8, 0);
         addToContainer(Panel2, 0, 1);
 
-        Model = new BisectionAbstractTableModel() {
+        Model = new SecantAbstractTableModel() {
             @Override
             public Object getValueAt(int rowIndex, int columnIndex) {
-                BisectionAnswer answer = BisectionAnswers.get(rowIndex);
+                SecantAnswer answer = SecantAnswers.get(rowIndex);
                 String format = "%." + decimalPlaces + "f";
 
                 switch (columnIndex) {
                     case 0: return answer.getN();
                     case 1: return String.format(format, answer.getX0());
                     case 2: return String.format(format, answer.getX1());
-                    case 3: return String.format(format, answer.getX2());
-                    case 4: return String.format(format, answer.getFx2());
-                    case 5: return String.format(format, answer.getEa());
+                    case 3: return String.format(format, answer.getFx0());
+                    case 4: return String.format(format, answer.getFx1());
+                    case 5: return String.format(format, answer.getX2());
+                    case 6: return String.format(format, answer.getEa());
                     default: return null;
                 }
             }
@@ -104,27 +103,25 @@ public class BisectionMethodFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    double a = Double.parseDouble(aField.getText());
-                    double b = Double.parseDouble(bField.getText());
+                    double x0 = Double.parseDouble(x0Field.getText());
+                    double x1 = Double.parseDouble(x1Field.getText());
                     double tolerance = Double.parseDouble(EaField.getText());
 
-                    performBisection(a, b, tolerance);
+                    performSecant(x0, x1, tolerance);
 
                 } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(BisectionMethodFrame.this,
-                            "Invalid input for a, b, or Ea.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(SecantMethodFrame.this,
+                            "Invalid input for x₀, x₁, or Ea.", "Input Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
-
-
 
         this.setSize(700, 400);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int x = (screenSize.width - this.getWidth()) / 2;
         int y = (screenSize.height - this.getHeight()) / 2;
         this.setLocation(x, y);
-        this.setTitle("BISECTION METHOD CALCULATOR");
+        this.setTitle("SECANT METHOD CALCULATOR");
         this.pack();
         this.setVisible(true);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -140,52 +137,50 @@ public class BisectionMethodFrame extends JFrame {
         }
     }
 
-    private void performBisection(double a, double b, double tolerance) {
-        Model.BisectionAnswers.clear();
+    private void performSecant(double x0, double x1, double tolerance) {
+        Model.SecantAnswers.clear();
         Model.fireTableDataChanged();
 
-        double fa = evaluateFunction(a);
-        double fb = evaluateFunction(b);
+        double fx0 = evaluateFunction(x0);
+        double fx1 = evaluateFunction(x1);
 
-        if (Double.isNaN(fa) || Double.isNaN(fb)) return;
+        if (Double.isNaN(fx0) || Double.isNaN(fx1)) return;
 
-        if (fa * fb > 0) {
-            JOptionPane.showMessageDialog(this,
-                    "No root found in interval (f(a) and f(b) have same sign)",
-                    "No Root", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        int n = 0;
-        double xn = 0;
-        double previousXn = a;
+        int n = 1;
+        double x2 = 0;
         double error = Double.MAX_VALUE;
 
         while (error > tolerance) {
-            previousXn = xn;
-            xn = (a + b) / 2.0;
-            double fxn = evaluateFunction(xn);
-
-            if (Double.isNaN(fxn)) return;
-
-            if (n > 0) {
-                error = Math.abs(xn - previousXn);
+            if (Math.abs(fx1 - fx0) < 1e-10) {
+                JOptionPane.showMessageDialog(this,
+                        "Division by zero encountered. Please choose different initial points.",
+                        "Calculation Error", JOptionPane.ERROR_MESSAGE);
+                return;
             }
 
-            Model.addIterativeAnswer(new BisectionAnswer(n + 1, a, b, xn, fxn, n > 0 ? error : Double.NaN));
+            x2 = x1 - (fx1 * (x1 - x0)) / (fx1 - fx0);
+            error = Math.abs((x2 - x1) / x2) * 100;
 
-            if (fxn == 0) break;
+            Model.addIterativeAnswer(new SecantAnswer(n, x0, x1, fx0, fx1, x2, error));
 
-            if (fa * fxn < 0) {
-                b = xn;
-            } else {
-                a = xn;
-                fa = fxn;
+            x0 = x1;
+            x1 = x2;
+            fx0 = fx1;
+            fx1 = evaluateFunction(x2);
+
+            if (Double.isNaN(fx1)) return;
+
+            if (n > 100) {
+                JOptionPane.showMessageDialog(this,
+                        "Maximum iterations reached without convergence",
+                        "Convergence Error", JOptionPane.WARNING_MESSAGE);
+                break;
             }
+
             n++;
         }
 
-        EstimatedRoot.setText(String.format("Estimated Root = %." + decimalPlaces + "f", xn));
+        EstimatedRoot.setText(String.format("Estimated Root = %." + decimalPlaces + "f", x2));
     }
 
     public void addToPanel(JPanel panel, Component component,
