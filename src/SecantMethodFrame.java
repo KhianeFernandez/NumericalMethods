@@ -89,7 +89,9 @@ public class SecantMethodFrame extends JFrame {
                     case 3: return String.format(format, answer.getFx0());
                     case 4: return String.format(format, answer.getFx1());
                     case 5: return String.format(format, answer.getX2());
-                    case 6: return String.format(format, answer.getEa());
+                    case 6:
+                        if (rowIndex == 0) return "";
+                        return String.format(format, answer.getEa());
                     default: return null;
                 }
             }
@@ -146,11 +148,13 @@ public class SecantMethodFrame extends JFrame {
 
         if (Double.isNaN(fx0) || Double.isNaN(fx1)) return;
 
-        int n = 1;
+        int n = 0;
         double x2 = 0;
-        double error = Double.MAX_VALUE;
+        double prevX2 = Double.NaN;
 
-        while (error > tolerance) {
+        while (true) {
+            n++;
+
             if (Math.abs(fx1 - fx0) < 1e-10) {
                 JOptionPane.showMessageDialog(this,
                         "Division by zero encountered. Please choose different initial points.",
@@ -159,10 +163,19 @@ public class SecantMethodFrame extends JFrame {
             }
 
             x2 = x1 - (fx1 * (x1 - x0)) / (fx1 - fx0);
-            error = Math.abs((x2 - x1) / x2) * 100;
 
-            Model.addIterativeAnswer(new SecantAnswer(n, x0, x1, fx0, fx1, x2, error));
+            if (n == 1) {
+                Model.addIterativeAnswer(new SecantAnswer(n, x0, x1, fx0, fx1, x2, Double.NaN));
+            } else {
+                double ea = Math.abs(x2 - prevX2);
+                Model.addIterativeAnswer(new SecantAnswer(n, x0, x1, fx0, fx1, x2, ea));
 
+                if (ea <= tolerance) {
+                    break; // stop after logging this iteration
+                }
+            }
+
+            prevX2 = x2;
             x0 = x1;
             x1 = x2;
             fx0 = fx1;
@@ -170,18 +183,17 @@ public class SecantMethodFrame extends JFrame {
 
             if (Double.isNaN(fx1)) return;
 
-            if (n > 100) {
+            if (n >= 100) {
                 JOptionPane.showMessageDialog(this,
-                        "Maximum iterations reached without convergence",
+                        "Maximum iterations reached without convergence.",
                         "Convergence Error", JOptionPane.WARNING_MESSAGE);
                 break;
             }
-
-            n++;
         }
 
         EstimatedRoot.setText(String.format("Estimated Root = %." + decimalPlaces + "f", x2));
     }
+
 
     public void addToPanel(JPanel panel, Component component,
                            int gridx, int gridy) {

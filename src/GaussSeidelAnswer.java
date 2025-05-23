@@ -1,15 +1,24 @@
+// GaussSeidelAnswer.java
 public class GaussSeidelAnswer {
-    private int iteration;
-    private double[] values;
-    private double error;
+    private final int iteration;
+    private final double[] x;
+    private final double[] ea;
 
-    public GaussSeidelAnswer(int iteration, double[] values, double error) {
+    public GaussSeidelAnswer(int iteration, double[] x, double[] ea) {
         this.iteration = iteration;
-        this.values = values.clone();
-        this.error = error;
+        this.x = x;
+        this.ea = ea;
     }
 
-    public int getIteration() { return iteration; }
-    public double[] getValues() { return values; }
-    public double getError() { return error; }
+    public int getIteration() {
+        return iteration;
+    }
+
+    public double[] getX() {
+        return x;
+    }
+
+    public double[] getEa() {
+        return ea;
+    }
 }

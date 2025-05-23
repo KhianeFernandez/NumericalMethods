@@ -58,6 +58,15 @@ public class OptionFrame extends JFrame {
             }
         });
 
+        GaussButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new GaussSeidelFrame();
+                dispose();
+            }
+        });
+
+
         DoolittleButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -68,15 +77,7 @@ public class OptionFrame extends JFrame {
             }
         });
 
-        GaussButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
 
-                new GaussSeidelFrame();
-                    dispose();
-
-            }
-        });
 
         SimpsonButton.addActionListener(new ActionListener() {
             @Override

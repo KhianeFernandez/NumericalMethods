@@ -35,8 +35,9 @@ public class SimpsonsAbstractTableModel extends AbstractTableModel {
         int counter = 0;
 
         if(columnIndex == 0){
-            counter++;
-            return STR."x\{counter}";
+//            counter++;
+//            return STR."x\{counter}";
+            return simpsonsAnswer.getX();
         }else if (columnIndex == 1){
             return simpsonsAnswer.getX();
         }else if (columnIndex == 2){
