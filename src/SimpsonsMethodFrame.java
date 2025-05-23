@@ -32,10 +32,10 @@
 
             try {
                 String formattedFunction = Function
-                        .replaceAll("([0-9])([a-zA-Z(])", "$1*$2") // Add * between numbers and variables/functions
-                        .replaceAll("([)])([a-zA-Z])", "$1*$2")    // Add * between closing parenthesis and function/variable
-                        .replaceAll("([a-zA-Z])([0-9])", "$1*$2")  // Add * between function name and number
-                        .replaceAll("e", "2.718281828459045");     // Replace 'e' with Euler's number
+                        .replaceAll("([0-9])([a-zA-Z(])", "$1*$2")
+                        .replaceAll("([)])([a-zA-Z])", "$1*$2")
+                        .replaceAll("([a-zA-Z])([0-9])", "$1*$2")
+                        .replaceAll("e", "2.718281828459045");
 
 
                 expression = new ExpressionBuilder(formattedFunction)
