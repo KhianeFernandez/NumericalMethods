@@ -17,7 +17,6 @@ public class SecantAnswer {
         this.ea = ea;
     }
 
-    // Getters
     public int getN() { return n; }
     public double getX0() { return x0; }
     public double getX1() { return x1; }
@@ -26,7 +25,6 @@ public class SecantAnswer {
     public double getX2() { return x2; }
     public double getEa() { return ea; }
 
-    // Setters
     public void setN(int n) { this.n = n; }
     public void setX0(double x0) { this.x0 = x0; }
     public void setX1(double x1) { this.x1 = x1; }

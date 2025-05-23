@@ -16,7 +16,7 @@ public class GaussSeidelTableModel extends AbstractTableModel {
 
     @Override
     public int getColumnCount() {
-        return variablesCount + 2; // Iteration, x-values, Error
+        return variablesCount + 2;
     }
 
     @Override

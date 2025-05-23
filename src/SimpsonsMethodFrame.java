@@ -50,8 +50,6 @@
             container = this.getContentPane();
             container.setLayout(layout);
 
-//            addToContainer(sumLabel, 0, 4);
-
             Panel1 = new JPanel();
             FunctionLabel = new JLabel("F(x) = " + Function);
             FunctionLabel.setSize(10, 10);
